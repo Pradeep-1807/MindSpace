@@ -1,10 +1,51 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import Protected from './components/Protected.jsx'
+import store from './store/store.js'
+import {Provider} from 'react-redux'
 import App from './App.jsx'
 import './index.css'
 
+import { Home, Signup,  Posts } from './pages/index.js'
+
+const router = createBrowserRouter([
+  {
+  path:'/',
+  element: <App />,
+  children: [
+    {
+      path:'/',
+      element:(
+        <Protected authentication={false}>
+          <Home />
+        </Protected>
+      )
+    },
+    {
+      path:'/signup',
+      element:(
+        <Protected authentication={false}>
+          <Signup />
+        </Protected>
+      )
+    },
+    {
+      path:'/posts',
+      element:(
+        <Protected authentication={true}>
+          <Posts />
+        </Protected>
+      )
+    },
+  ]
+  }
+])
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 )
