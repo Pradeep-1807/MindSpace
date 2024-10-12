@@ -1,14 +1,31 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import apiRequest from '../utils/apiRequest'
+import bcrypt from 'bcryptjs'
 
 const Signup = () => {
 
     const navigate = useNavigate()
-    const {register, handleSubmit, formState:{errors}} = useForm()
+    const {register, handleSubmit, watch, formState:{errors}} = useForm()
+    const password = watch("password");
 
-    function signupSubmit(data){
-        console.log(data)
+    async function signupSubmit(data){
+        const {password, confirmPassword} = data
+        try {
+            if (password===confirmPassword){
+                data.confirmPassword = null
+                data.password = await bcrypt.hash(data.password, 10)
+            }
+            const response = await apiRequest({
+                method:'POST',
+                url:'/register',
+                data
+            })
+            console.log("User registered successfully :: ",response)
+        } catch (error) {
+            console.log('signupSubmit :: ',error)
+        }
     }
 
   return (
@@ -28,12 +45,16 @@ const Signup = () => {
                     </svg>
                     </span>
                     <input
-                    {...register('username')}
+                    {...register('username',{
+                        required:"Username is required"
+                    })}
                     type="text"
                     className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Username"
                     />
                 </div>
+                {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+
 
                 <div className="relative flex items-center mt-6">
                     <span className="absolute">
@@ -42,12 +63,19 @@ const Signup = () => {
                     </svg>
                     </span>
                     <input
-                    {...register('email')}
+                    {...register('email',{
+                        required:'Email is required',
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: 'Invalid email address',
+                        }
+                    })}
                     type="email"
                     className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Email address"
                     />
                 </div>
+                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
                 <div className="relative flex items-center mt-4">
                     <span className="absolute">
@@ -56,12 +84,17 @@ const Signup = () => {
                     </svg>
                     </span>
                     <input
-                    {...register('password')}
+                    {...register('password',{
+                        required:'Password is required',
+                        minLength: { value: 3, message: 'Password must be at least 3 characters long' },
+                    })}
                     type="password"
                     className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Password"
                     />
                 </div>
+                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+
 
                 <div className="relative flex items-center mt-4">
                     <span className="absolute">
@@ -70,12 +103,16 @@ const Signup = () => {
                     </svg>
                     </span>
                     <input
-                    {...register('confirmPassword')}
+                    {...register('confirmPassword', {
+                        required: 'Confirm Password is required',
+                        validate: (value) => value === password || 'Passwords do not match',
+                      })}
                     type="password"
                     className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Confirm Password"
                     />
                 </div>
+                {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
 
                 <div className="mt-6">
                     <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
@@ -93,7 +130,7 @@ const Signup = () => {
                 </div>
             </form>
         </div>
-        </section>
+    </section>
 
   )
 }
