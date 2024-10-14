@@ -1,5 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../store/authSlice'
 import { useForm } from 'react-hook-form'
 import apiRequest from '../utils/apiRequest'
 import bcrypt from 'bcryptjs'
@@ -7,15 +9,18 @@ import bcrypt from 'bcryptjs'
 const Signup = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const {register, handleSubmit, watch, formState:{errors}} = useForm()
     const password = watch("password");
 
     async function signupSubmit(data){
         const {password, confirmPassword} = data
+        
         try {
             if (password===confirmPassword){
                 data.confirmPassword = null
                 data.password = await bcrypt.hash(data.password, 10)
+                console.log(data.password)
             }
             const response = await apiRequest({
                 method:'POST',
@@ -23,8 +28,10 @@ const Signup = () => {
                 data
             })
             console.log("User registered successfully :: ",response)
+            dispatch(login(response.user))
+            navigate('/posts')
         } catch (error) {
-            console.log('signupSubmit :: ',error)
+            console.log('signupSubmit :: ',error.response)
         }
     }
 

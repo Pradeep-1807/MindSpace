@@ -1,11 +1,11 @@
 import express from 'express'
-import { registerUser, verifyUser } from '../functions/userFunctions.js'
+import { registerUser, loginUser } from '../functions/userFunctions.js'
 
 
 const router = express.Router()
 
 router.post('/register', registerUser)
 
-router.post('/login', verifyUser)
+router.post('/login', loginUser)
 
 export default router;

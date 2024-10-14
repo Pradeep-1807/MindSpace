@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../store/authSlice';
 import backgroundImg from '../assets/backgroundImg.jpg'
+import apiRequest from '../utils/apiRequest';
+import bcrypt from 'bcryptjs'
 import { useForm } from 'react-hook-form'
 
 const Home = () => {
@@ -8,15 +12,31 @@ const Home = () => {
 
   const { register, handleSubmit, formState:{errors} } = useForm()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+ 
+  const authStatus = useSelector((state)=> state.auth.status)
+  console.log( 'auth Status from home :: ',authStatus)
 
-  function loginSubmit(data){
-    console.log(data)
-    console.log(errors)
+  async function loginSubmit(data){
+    try {
+      console.log(data.password)
+      const response = await apiRequest({
+          method:'POST',
+          url:'/login',
+          data
+      })
+      console.log("User logged in successfully :: ",response)
+      dispatch(login(response.user))
+      navigate('/posts')
+
+    } catch (error) {
+        console.log('loginSubmit :: ',error.response)
+    }
   }
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   return (
     <section className="bg-white dark:bg-gray-900 " 
