@@ -1,4 +1,5 @@
 import User from '../models/userModel.js'
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 
@@ -50,29 +51,29 @@ const registerUser = async (req, res) => {
           message: 'Email is already registered.',
         });
       }
-
+      
+      const hashedPassword = await bcrypt.hash(password, 10)
       const newUser = await User.create({ 
         username, 
         email, 
-        password 
+        password: hashedPassword 
       });
 
-      const verifiedUser = await verifyUser(email, password);
-      if (!verifiedUser.status) {
-        return res.status(400).json({
-          status: 'Failed',
-          message: verifiedUser.message,
-        });
-      }
+      // const verifiedUser = await verifyUser(email, password);
+      // if (!verifiedUser.status) {
+      //   return res.status(400).json({
+      //     status: 'Failed',
+      //     message: verifiedUser.message,
+      //   });
+      // }
 
-      const { username: verifiedUsername, email: verifiedEmail } = verifiedUser.user;
 
       res.status(201).json({
         status: 'Success',
         message: 'User created and verified successfully',
         user: {
-          name: verifiedUsername,
-          email: verifiedEmail,
+          name: newUser.username,
+          email: newUser.email,
         },
       });
       
@@ -92,16 +93,16 @@ const registerUser = async (req, res) => {
 
 
 
-const loginUser = async(req,res)=>{
-    const { email, password } = req.body
-
+  const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+  
     if (!email || !password) {
       return res.status(400).json({
         status: 'Failed',
         message: 'Email and Password are required.',
       });
     }
-
+  
     try {
       const verifiedUser = await verifyUser(email, password);
       if (!verifiedUser.status) {
@@ -110,9 +111,26 @@ const loginUser = async(req,res)=>{
           message: verifiedUser.message,
         });
       }
-
-      const { username: verifiedUsername, email: verifiedEmail } = verifiedUser.user;
-
+  
+      // Destructure username and email from verifiedUser.user
+      const { _id, username: verifiedUsername, email: verifiedEmail } = verifiedUser.user;
+  
+      // Create the JWT token
+      const token = jwt.sign(
+        { id: _id, email: verifiedEmail }, 
+        process.env.JWT_SECRET_KEY, 
+        { expiresIn: '30s' }
+      );
+  
+      // Set the token in a HTTP-only cookie
+      res.cookie('authToken', token, {
+        httpOnly: true,  // Cookie is only accessible by the server, not via JS
+        secure: process.env.NODE_ENV === 'production',  // Set to true in production
+        sameSite: 'Strict',  // Helps prevent CSRF attacks
+        maxAge: 30000  // Optional: cookie expiry (1 hour in ms)
+      });
+  
+      // Send a successful response with user data and token
       res.status(200).json({
         status: 'Success',
         message: 'User logged in successfully',
@@ -120,15 +138,16 @@ const loginUser = async(req,res)=>{
           name: verifiedUsername,
           email: verifiedEmail,
         },
+        token  // Optional, token is already set in the cookie
       });
-
+  
     } catch (error) {
-      res.send(400).json({
-        status:'Failed',
-        message:'Error logging in user',
-        error:error.response
-      })
+      res.status(500).json({
+        status: 'Failed',
+        message: 'Error logging in user',
+        error: error.message
+      });
     }
-}
-
+  };
+  
 export {registerUser, loginUser}

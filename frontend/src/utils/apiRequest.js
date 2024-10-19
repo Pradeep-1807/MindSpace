@@ -12,6 +12,7 @@ const apiRequest = async ({ method, url, data = {}, headers = {} }) => {
         data: data,               // Payload for POST/PUT requests
         headers: headers,         // Custom headers
         baseURL: BASE_URL,        //  Default base URL (optional)
+        withCredentials: true
         });
 
         return response.data;       // Return the response data

@@ -17,19 +17,18 @@ const Signup = () => {
         const {password, confirmPassword} = data
         
         try {
-            if (password===confirmPassword){
-                data.confirmPassword = null
-                data.password = await bcrypt.hash(data.password, 10)
-                console.log(data.password)
-            }
+            // if (password===confirmPassword){
+            //     data.confirmPassword = null
+            //     data.password = await bcrypt.hash(data.password, 10)
+            //     console.log(data.password)
+            // }
             const response = await apiRequest({
                 method:'POST',
                 url:'/register',
                 data
             })
             console.log("User registered successfully :: ",response)
-            dispatch(login(response.user))
-            navigate('/posts')
+            navigate('/')
         } catch (error) {
             console.log('signupSubmit :: ',error.response)
         }
