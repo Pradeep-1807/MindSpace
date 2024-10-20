@@ -41,7 +41,7 @@ const registerUser = async (req, res) => {
       });
     }
    
-  
+
     try {
       
       const existingUser = await User.findOne({ email });
@@ -112,14 +112,13 @@ const registerUser = async (req, res) => {
         });
       }
   
-      // Destructure username and email from verifiedUser.user
       const { _id, username: verifiedUsername, email: verifiedEmail } = verifiedUser.user;
   
       // Create the JWT token
       const token = jwt.sign(
-        { id: _id, email: verifiedEmail }, 
+        { id: _id, username: verifiedUsername, email: verifiedEmail }, 
         process.env.JWT_SECRET_KEY, 
-        { expiresIn: '30s' }
+        { expiresIn: '15d' }
       );
   
       // Set the token in a HTTP-only cookie
@@ -127,7 +126,7 @@ const registerUser = async (req, res) => {
         httpOnly: true,  // Cookie is only accessible by the server, not via JS
         secure: process.env.NODE_ENV === 'production',  // Set to true in production
         sameSite: 'Strict',  // Helps prevent CSRF attacks
-        maxAge: 30000  // Optional: cookie expiry (1 hour in ms)
+        maxAge: 1000 * 60 * 60 * 24 * 15  // Optional: cookie expiry (15 days in ms)
       });
   
       // Send a successful response with user data and token
@@ -138,7 +137,6 @@ const registerUser = async (req, res) => {
           name: verifiedUsername,
           email: verifiedEmail,
         },
-        token  // Optional, token is already set in the cookie
       });
   
     } catch (error) {

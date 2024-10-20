@@ -38,21 +38,22 @@ const Home = () => {
     try {
       const response = await apiRequest({
         method: 'GET',
-        url: '/verifyTokenAtHome',   // Your backend endpoint for verifying the token
+        url: '/verifyTokenAtHome',   
       });
 
       if (response.message === 'Token is valid') {
         dispatch(login(response.user))
-        navigate('/posts');  // Redirect to posts page if token is valid
+        console.log('user info from jwt ::',response.user)
+        navigate('/posts');  
       }
     } catch (error) {
       console.log('Token invalid or not present');
     }
   };
 
-  // Check token when component loads
+
   useEffect(() => {
-    verifyToken();  // Call token verification function on component load
+    verifyToken();  
   }, []);
 
   // const toggleMenu = () => {
