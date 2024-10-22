@@ -1,13 +1,37 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import { GridFsStorage } from 'multer-gridfs-storage';
 
-const connectDB = async()=>{
+let gfs;
+
+// Connect to the database and initialize GridFS
+const connectDB = async () => {
+
+    const CONNECTION_STRING = String(process.env.CONNECTION_STRING)
+
     try {
-        const connect = await mongoose.connect(process.env.CONNECTION_STRING)
-        console.log('Database connected successfully - Host:',connect.connection.host,' name:',connect.connection.name)
-    } catch (error) {
-        console.log("Failed to Connect to Database")
+        await mongoose.connect(CONNECTION_STRING);
+        console.log('MongoDB connected');
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
     }
-}
 
+    const conn = mongoose.connection;
+    
 
-export default connectDB
+    // Initialize GridFSBucket inside a try...catch
+
+    let bucket;
+    conn.once('open', () => {
+    try {
+        gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: 'uploads' // Custom bucket name
+        });
+        console.log('GridFS Bucket initialized');
+    } catch (err) {
+        console.error('Error initializing GridFSBucket:', err);
+    }
+    });
+
+};
+
+export { connectDB, gfs };

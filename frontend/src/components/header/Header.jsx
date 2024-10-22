@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import navContent from '../../utils/navContent';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
+
+  const authData = useSelector((state)=>state.auth.userData)
+  console.log('authdata',authData)
+  
 
   return (
     <nav className="relative bg-white shadow dark:bg-slate-800">
@@ -100,7 +105,7 @@ const Header = () => {
                   />
                 </div>
                 <h3 className="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                  Khatab Wedaa
+                  {authData?.username}
                 </h3>
               </button>
             </div>
