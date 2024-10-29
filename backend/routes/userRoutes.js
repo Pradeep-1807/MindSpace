@@ -6,6 +6,7 @@ import { verifyTokenAtHome } from '../functions/verifyJwtToken.js'
 
 
 const router = express.Router()
+const app = express()
 
 router.get('/verifyTokenAtHome', verifyTokenAtHome)
 
@@ -15,6 +16,5 @@ router.post('/login', loginUser)
 
 router.get('/posts',verifyToken, getPosts)
 
-router.post('/fileUpload', verifyToken, uploadFile, isFileUploaded)
 
 export default router;

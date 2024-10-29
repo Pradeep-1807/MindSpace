@@ -2,33 +2,19 @@ import multer from 'multer';
 import { GridFsStorage } from 'multer-gridfs-storage';
 import mongoose from 'mongoose';
 import { gfs } from '../config/dbConfig.js'; // Ensure gfs is imported
-
-const connectionString = String(process.env.CONNECTION_STRING);
-
-const storage = new GridFsStorage({
-  url: connectionString,
-  options: { useNewUrlParser: true, useUnifiedTopology: true },
-  file: (req, file) => {
-      return {
-          filename: file.originalname,
-          bucketName: 'uploads', // Collection name
-      };
-  },
-});
-
-const upload = multer({ storage });
+import { upload } from '../config/dbConfig.js';
 
 // Function to handle file upload
-const uploadFile = (req, res, next) => {
-  if (!gfs) {
-      return res.status(500).json({ message: 'GridFS not initialized yet, try again later' });
+const uploadFile = async (req, res) => {
+  try {
+
+      res.status(200).json({ 
+        title: req.body.title,
+        content: req.body.content,
+        file: req.file });
+  } catch (err) {
+      res.status(500).json({ error: 'Error during file upload', details: err.message });
   }
-  upload.single('file')(req, res, (err) => {
-      if (err) {
-          return res.status(500).json({ message: 'Error during file upload', error: err });
-      }
-      next(); // Move to the next middleware if upload is successful
-  });
 };
 
 // After file upload, return the uploaded file details

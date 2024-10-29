@@ -6,7 +6,7 @@ import '../App.css';
 import { nanoid } from 'nanoid';  // Import nanoid
 
 const AddPost = () => {
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm();
   const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
 
   const [file, setFile] = useState(null); // To store the selected file
@@ -50,6 +50,8 @@ const AddPost = () => {
         },
       });
       console.log('Response:', response);
+      setFile(null)
+      reset()
     } catch (error) {
       console.error('Error submitting post:', error);
     }
