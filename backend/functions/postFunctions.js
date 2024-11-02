@@ -1,4 +1,6 @@
-import { connectDB, gfs } from "../config/dbConfig.js";
+import { gfs } from "../config/dbConfig.js";
+import mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
 // Function to handle file upload
 const uploadFile = async (req, res) => {
   try {
@@ -43,5 +45,23 @@ const getPosts =  async (req, res) => {
   }
 }
 
+const getFileById = async (req, res) => {
+    try {
+      const fileId = new mongoose.Types.ObjectId(req.params.id);
+      const file = await gfs.find({ _id: fileId }).toArray();
+  
+      if (!file || file.length === 0) {
+        return res.status(404).json({ error: "File not found" });
+      }
+  
+      res.set("Content-Type", file[0].contentType);
+      const readstream = gfs.openDownloadStream(fileId);
+      readstream.pipe(res);
+    } catch (error) {
+      console.error("Error retrieving file:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 
-export {  uploadFile, getPosts };
+
+export {  uploadFile, getPosts, getFileById };

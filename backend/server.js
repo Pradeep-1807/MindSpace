@@ -4,9 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { connectDB, upload, gfs } from './config/dbConfig.js';
 import userRoutes from './routes/userRoutes.js';
-import { getPosts, uploadFile } from './functions/postFunctions.js';
-import mongoose from 'mongoose';
-
+import { getFileById, getPosts, uploadFile } from './functions/postFunctions.js';
 const port = 8000;
 const app = express();
 dotenv.config();
@@ -14,11 +12,13 @@ dotenv.config();
 // Start the server after connecting to the database
 const startServer = async () => {
     try {
-        await connectDB(); // Connects to DB and initializes `upload`
+        await connectDB(); 
 
         app.use(cors({
-            origin: process.env.FRONTEND_URL, // Allow the frontend origin
+            origin: process.env.FRONTEND_URL, 
             credentials: true,
+            methods: ["GET", "POST", "OPTIONS"],
+            allowedHeaders: ["Content-Type", "Authorization"]
         }));
 
 
@@ -31,25 +31,10 @@ const startServer = async () => {
         // Post Routes 
         app.post('/upload', upload.single('file'), uploadFile );
         app.get('/getPosts', getPosts);
+        
         // Endpoint to serve individual files by their ObjectId
-        app.get('/file/:id', (req, res) => {
-            if (!gfs) {
-            return res.status(500).json({ message: 'GridFS is not initialized' });
-            }
+        app.get("/file/:id", getFileById);
         
-            const fileId = new mongoose.Types.ObjectId(req.params.id);
-        
-            gfs.find({ _id: fileId }).toArray((err, files) => {
-                if (err || !files || files.length === 0) {
-                    return res.status(404).json({ message: 'File not found' });
-                }
-            
-                const file = files[0];
-                res.setHeader('Content-Type', file.contentType);
-                
-                gfs.openDownloadStream(file._id).pipe(res);
-            });
-        });
   
         
       
