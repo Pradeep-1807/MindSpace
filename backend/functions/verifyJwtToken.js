@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 function verifyToken(req, res, next) {
     const token = req.cookies.authToken;  // Get token from cookie
-  
+    
     if (!token) {
       return res.status(401).json({ message: 'Access denied. No token provided.' });
     }
@@ -20,7 +20,6 @@ function verifyToken(req, res, next) {
 
 function verifyTokenAtHome(req, res) {
     const token = req.cookies.authToken;  // Get token from cookies
-  
     if (!token) {
       return res.status(401).json({ message: 'Token not found' });  // No token present
     }

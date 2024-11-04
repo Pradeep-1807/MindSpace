@@ -30,6 +30,7 @@ const AddPost = () => {
       const uniqueFileId = nanoid();  // Generate unique ID for the file
       formData.append('file', file);  // Append the selected file
       formData.append('fileId', uniqueFileId);  // Append the unique file ID
+      
     }
 
     formData.append('content', data.content); // Append TinyMCE content
@@ -58,7 +59,7 @@ const AddPost = () => {
   };
 
   return (
-    <div className='min-h-screen flex flex-col px-5 sm:px-10 justify-center items-center'>
+    <div className='min-h-screen flex flex-col px-5 sm:px-10 justify-center items-center pt-[8vh] sm:pt-[10vh]'>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" encType="multipart/form-data">
         {/* Title Field */}
         <div>

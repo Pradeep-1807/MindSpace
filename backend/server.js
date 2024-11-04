@@ -31,8 +31,6 @@ const startServer = async () => {
         // Post Routes 
         app.post('/upload', upload.single('file'), uploadFile );
         app.get('/getPosts', getPosts);
-        
-        // Endpoint to serve individual files by their ObjectId
         app.get("/file/:id", getFileById);
         
   

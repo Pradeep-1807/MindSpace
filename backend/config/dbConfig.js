@@ -35,7 +35,7 @@ const connectDB = async () => {
                           filename: filename,
                           bucketName: 'uploads'
                       };
-                      resolve(fileInfo);z
+                      resolve(fileInfo);
                   });
               });
           }
