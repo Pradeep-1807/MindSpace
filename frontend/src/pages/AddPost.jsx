@@ -4,11 +4,15 @@ import { Editor } from '@tinymce/tinymce-react';
 import apiRequest from '../utils/apiRequest';
 import '../App.css';
 import { nanoid } from 'nanoid';  // Import nanoid
+import { useSelector } from 'react-redux';
+import blogCategories from '../utils/blogCategories';
 
 const AddPost = () => {
   const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm();
   const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
 
+  const authData = useSelector((state)=>state.auth.userData)
+  console.log('authdata from add post :',authData)
   const [file, setFile] = useState(null); // To store the selected file
 
   // Handle file input change
@@ -23,17 +27,19 @@ const AddPost = () => {
 
   // Submit handler
   const onSubmit = async (data) => {
+    console.log('data',data)
     const formData = new FormData();
     formData.append('title', data.title); // Append title
     
     if (file) {
       const uniqueFileId = nanoid();  // Generate unique ID for the file
       formData.append('file', file);  // Append the selected file
-      formData.append('fileId', uniqueFileId);  // Append the unique file ID
-      
     }
 
     formData.append('content', data.content); // Append TinyMCE content
+    formData.append('category', data.category)
+    formData.append('username', authData.username)
+    formData.append('email', authData.email)
 
     // Log FormData contents for debugging
     for (let pair of formData.entries()) {
@@ -69,6 +75,23 @@ const AddPost = () => {
             {...register('title', { required: 'Title is required' })}
             className="border p-2 w-full"
           />
+          {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            {...register('category', { required: 'category is required' })}
+            className="border p-2 w-full"
+          >
+           {
+            blogCategories && blogCategories.map((singleCategory)=>(
+              <option key={nanoid()} value={singleCategory}>{singleCategory}</option>
+            ))
+           }
+          </select>
+
           {errors.title && <p className="text-red-500">{errors.title.message}</p>}
         </div>
 

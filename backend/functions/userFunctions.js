@@ -51,6 +51,14 @@ const registerUser = async (req, res) => {
           message: 'Email is already registered.',
         });
       }
+
+      const userWithSameUsername = await User.findOne({ username })
+      if (userWithSameUsername){
+        return res.status(400).json({
+          status:false,
+          message: 'Username is already taken'
+        })
+      }
       
       const hashedPassword = await bcrypt.hash(password, 10)
       const newUser = await User.create({ 
@@ -69,7 +77,7 @@ const registerUser = async (req, res) => {
 
 
       res.status(201).json({
-        status: 'Success',
+        status: true,
         message: 'User created and verified successfully',
         user: {
           name: newUser.username,

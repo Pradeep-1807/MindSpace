@@ -21,11 +21,11 @@ const uploadFile = async (req, res) => {
     }
     
     // Extract metadata from request body
-    const { title, content } = req.body;
+    const { title, content, category, username, email } = req.body;
 
     // Update the file metadata
     const fileId = req.file.id;
-    const metadata = { title, content };
+    const metadata = { title, content, category, username, email };
 
     // Find the uploaded file and update its metadata
     if (!mongoose.Types.ObjectId.isValid(fileId)) {
@@ -40,6 +40,9 @@ const uploadFile = async (req, res) => {
           metadata: {
             title: title,
             content: content,
+            category: category,
+            username: username,
+            email: email,
           },
         },
       }

@@ -61,7 +61,7 @@ const Home = () => {
   // };
 
   return (
-    <section className="bg-white dark:bg-gray-900 " 
+    <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] " 
     style={{ 
         backgroundImage: `url(${backgroundImg})`,
         backgroundSize: 'cover',
