@@ -20,8 +20,7 @@ const startServer = async () => {
             methods: ["GET", "POST", "OPTIONS"],
             allowedHeaders: ["Content-Type", "Authorization"]
         }));
-
-
+        
         app.use(cookieParser());
         app.use(express.json());
 
