@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import apiRequest from '../utils/apiRequest';
+import parse from 'html-react-parser'
 import { all } from 'axios';
 
 const Posts = () => {
@@ -44,7 +45,7 @@ const Posts = () => {
           const imageUrl = `${BASE_URL}/file/${file._id}`;
           const { title, content, category, username, email } = file.metadata
           return (
-            <div class="container px-6 py-10 mx-auto cursor-pointer">
+            <div class="container px-6 py-10 mx-auto cursor-pointer" onClick={()=>handlePostNavigate(file._id)}>
                 <div class="mt-8 lg:-mx-6 lg:flex lg:items-center">
                     <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96" src={imageUrl} alt="Image" />
 
@@ -56,7 +57,7 @@ const Posts = () => {
                         </h3>
 
                         <p class="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
-                            { content }
+                            { parse(content) }
                         </p>
 
 
@@ -74,37 +75,29 @@ const Posts = () => {
           );
         })
       ) : (
-        <section class="bg-white dark:bg-gray-900">
-          <div class="container px-6 py-10 mx-auto animate-pulse">
-              <h1 class="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-700"></h1>
+        <div class=" pt-[8vh] sm:pt-[10vh] flex w-full max-w-md mx-auto overflow-hidden bg-white rounded-lg shadow-lg animate-pulse dark:bg-gray-800">
+          <div class="w-2/3 bg-gray-300 dark:bg-gray-600"></div>
 
-              <p class="w-64 h-2 mx-auto mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-              <p class="w-64 h-2 mx-auto mt-4 bg-gray-200 rounded-lg sm:w-80 dark:bg-gray-700"></p>
+          <div class="w-2/3 h-[500px] p-4 md:p-4">
+              <h1 class="w-40 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></h1>
 
-              <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 sm:grid-cols-2 lg:grid-cols-3">
-                  <div class="w-full ">
-                      <div class="w-full h-64 bg-gray-300 rounded-lg md:h-72 dark:bg-gray-600"></div>
-                      
-                      <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></h1>
-                      <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                  </div>
+              <p class="w-48 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
 
-                  <div class="w-full ">
-                      <div class="w-full h-64 bg-gray-300 rounded-lg md:h-72 dark:bg-gray-600"></div>
-                      
-                      <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></h1>
-                      <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                  </div>
+              <div class="flex mt-4 item-center gap-x-2">
+                  <p class="w-5 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                  <p class="w-5 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                  <p class="w-5 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                  <p class="w-5 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                  <p class="w-5 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+              </div>
 
-                  <div class="w-full ">
-                      <div class="w-full h-64 bg-gray-300 rounded-lg md:h-72 dark:bg-gray-600"></div>
-                      
-                      <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></h1>
-                      <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                  </div>
+              <div class="flex justify-between mt-6 item-center">
+                  <h1 class="w-10 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></h1>
+
+                  <div class="h-4 bg-gray-200 rounded-lg w-28 dark:bg-gray-700"></div>
               </div>
           </div>
-        </section>
+        </div>
       )}
         
     </section>
