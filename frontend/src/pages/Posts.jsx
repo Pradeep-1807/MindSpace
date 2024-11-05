@@ -38,6 +38,7 @@ const Posts = () => {
     getPosts();
   }, []);
 
+  
   return (
     <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] min-h-screen px-0 sm:px-20">
       {allPosts.length > 0 ? (

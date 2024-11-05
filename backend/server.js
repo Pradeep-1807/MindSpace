@@ -25,7 +25,6 @@ const startServer = async () => {
         app.use(express.json());
 
         app.use('/', userRoutes);
-
         
         // Post Routes 
         app.post('/upload', upload.single('file'), uploadFile );
