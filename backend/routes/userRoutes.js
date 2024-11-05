@@ -14,7 +14,6 @@ router.post('/register', registerUser)
 
 router.post('/login', loginUser)
 
-// router.get('/posts',verifyToken, getPosts)
 
 
 export default router;

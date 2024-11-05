@@ -32,8 +32,6 @@ const startServer = async () => {
         app.get('/getPosts', getPosts);
         app.get("/file/:id", getFileById);
         
-  
-        
       
 
         app.listen(port, () => {
