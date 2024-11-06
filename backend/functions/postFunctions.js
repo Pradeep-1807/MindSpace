@@ -91,7 +91,7 @@ const getPosts =  async (req, res) => {
 
 const getFileById = async (req, res) => {
   try {
-    const fileId = new mongoose.Types.ObjectId(req.params.id);
+    const fileId = new mongoose.Types.ObjectId(req.params.postId);
     const file = await gfs.find({ _id: fileId }).toArray();
     console.log('single file : ', file)
 
@@ -108,5 +108,25 @@ const getFileById = async (req, res) => {
   }
 }
 
+const getFileDetails = async(req,res)=>{
+  try {
+    const postId = new mongoose.Types.ObjectId(req.params.postId)
+    const postDetails = await gfs.find({_id: postId}).toArray()
+    
+    if (!postDetails || postDetails.length === 0){
+      return res.status(404).json({ error: "File not found" });
+    }
 
-export {  uploadFile, getPosts, getFileById };
+    res.status(200).json({
+      message:'Post Details retrieved successfully',
+      post:postDetails[0]
+    })
+
+  } catch (error) {
+    console.error("Error retrieving file:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+
+export {  uploadFile, getPosts, getFileById, getFileDetails };

@@ -4,7 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { connectDB, upload, gfs } from './config/dbConfig.js';
 import userRoutes from './routes/userRoutes.js';
-import { getFileById, getPosts, uploadFile } from './functions/postFunctions.js';
+import { getFileById, getFileDetails, getPosts, uploadFile } from './functions/postFunctions.js';
 const port = 8000;
 const app = express();
 dotenv.config();
@@ -29,7 +29,8 @@ const startServer = async () => {
         // Post Routes 
         app.post('/upload', upload.single('file'), uploadFile );
         app.get('/getPosts', getPosts);
-        app.get("/file/:id", getFileById);
+        app.get("/streamPost/:postId", getFileById);
+        app.get("/postDetails/:postId", getFileDetails)
         
       
 

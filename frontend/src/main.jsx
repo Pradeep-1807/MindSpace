@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       )
     },
     {
-      path: '/post/:id',
+      path: '/post/:postId',
       element:(
         <Protected authentication={true}>
           <SinglePostDetails />
