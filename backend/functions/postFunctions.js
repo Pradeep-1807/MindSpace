@@ -128,5 +128,41 @@ const getFileDetails = async(req,res)=>{
   }
 }
 
+const deletePost = async (req, res) => {
+  try {
+    const postId = new mongoose.Types.ObjectId(req.params.postId);
+    
+    // Check if the file exists in GridFS
+    const postToDelete = await gfs.find({ _id: postId }).toArray();
+    
+    if (!postToDelete || postToDelete.length === 0) {
+      return res.status(400).json({
+        error: 'No such post exists to delete',
+      });
+    }
 
-export {  uploadFile, getPosts, getFileById, getFileDetails };
+    // Delete the file from GridFS
+    await gfs.delete(postId);
+
+    // Check if the file was deleted
+    const checkDeletion = await gfs.find({ _id: postId }).toArray();
+    
+    if (checkDeletion.length === 0) {
+      return res.status(200).json({
+        status:true,
+        message: 'Post deleted successfully',
+      });
+    } else {
+      return res.status(500).json({
+        error: 'Failed to delete the post',
+      });
+    }
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return res.status(500).json({
+      error: 'An error occurred while deleting the post',
+    });
+  }
+};
+
+export {  uploadFile, getPosts, getFileById, getFileDetails, deletePost };

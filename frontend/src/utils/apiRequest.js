@@ -4,7 +4,6 @@ import axios from 'axios'
 
 const apiRequest = async ({ method, url, data = {}, headers = {} }) => {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL
-    console.log(BASE_URL)
     try {
         const response = await axios({
         method: method,           // HTTP method (GET, POST, PUT, DELETE, etc.)

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import apiRequest from '../utils/apiRequest';
-import parse from 'html-react-parser'
+import SinglePostCard from '../components/postcard/SinglePostCard';
 import { all } from 'axios';
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
-  const navigate = useNavigate()
+  
   const authStatus = useSelector((state) => state.auth.status);
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -28,9 +28,7 @@ const Posts = () => {
     }
   };
 
-  function handlePostNavigate(id){
-    navigate(`/post/${id}`)
-  }
+  
 
   console.log('post collection : ',allPosts)
 
@@ -47,33 +45,18 @@ const Posts = () => {
           console.log('imageurl: ',imageUrl)
           const { title, content, category, username, email } = file.metadata
           return (
-            <div className="container px-6 py-10 mx-auto cursor-pointer" key={file._id} onClick={()=>handlePostNavigate(file._id)}>
-                <div className="mt-8 lg:-mx-6 lg:flex lg:items-center">
-                    <img className="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96" src={imageUrl} alt="Image" />
 
-                    <div className="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 ">
-                        <p className="text-sm text-blue-500 uppercase">{category || 'Category'}</p>
-
-                        <h3 href="#" className="block mt-4 text-2xl font-semibold text-gray-800  dark:text-white">
-                            { title }
-                        </h3>
-
-                        <span className="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
-                            { parse(content) }
-                        </span>
-
-
-                        <div className="flex items-center mt-6">
-                            <img className="object-cover object-center w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1531590878845-12627191e687?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="" />
-
-                            <div className="mx-4">
-                                <h1 className="text-sm text-gray-700 dark:text-gray-200">{ username }</h1>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{ email }</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <SinglePostCard 
+              key={file._id}
+              postId={file._id}
+              imageUrl={imageUrl}
+              category={category}
+              title={title}
+              content={content}
+              username={username}
+              email={email}
+            />
+            
           );
         })
       ) : (
