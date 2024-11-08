@@ -65,7 +65,7 @@ const AddPost = () => {
   };
 
   return (
-    <div className='min-h-screen flex flex-col px-5 sm:px-10 justify-center items-center pt-[8vh] sm:pt-[10vh]'>
+    <div className='min-h-screen bg-white shadow dark:bg-slate-900 text-white flex flex-col px-5 sm:px-10 justify-center items-center pt-[8vh] sm:pt-[10vh]'>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" encType="multipart/form-data">
         {/* Title Field */}
         <div>
@@ -73,7 +73,7 @@ const AddPost = () => {
           <input
             id="title"
             {...register('title', { required: 'Title is required' })}
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded-md text-black"
           />
           {errors.title && <p className="text-red-500">{errors.title.message}</p>}
         </div>
@@ -83,7 +83,7 @@ const AddPost = () => {
           <select
             id="category"
             {...register('category', { required: 'category is required' })}
-            className="border p-2 w-full"
+            className="border p-2 w-full text-black rounded-md"
           >
            {
             blogCategories && blogCategories.map((singleCategory)=>(

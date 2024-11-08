@@ -6,10 +6,12 @@ import SinglePostCard from '../components/postcard/SinglePostCard';
 import { all } from 'axios';
 
 const Posts = () => {
+
   const [allPosts, setAllPosts] = useState([]);
+
   
-  const authStatus = useSelector((state) => state.auth.status);
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
   const getPosts = async () => {
     try {
@@ -28,8 +30,6 @@ const Posts = () => {
     }
   };
 
-  
-
   console.log('post collection : ',allPosts)
 
   useEffect(() => {
@@ -44,6 +44,8 @@ const Posts = () => {
           const imageUrl = `${BASE_URL}/streamPost/${file._id}`;
           console.log('imageurl: ',imageUrl)
           const { title, content, category, username, email } = file.metadata
+
+
           return (
 
             <SinglePostCard 

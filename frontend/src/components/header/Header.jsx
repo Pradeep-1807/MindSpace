@@ -12,7 +12,7 @@ const Header = () => {
   
 
   return (
-    <nav className="fixed top-0 w-full bg-white shadow dark:bg-slate-800">
+    <nav className="fixed top-0 w-full bg-white shadow dark:bg-slate-800 z-50">
       <div className="container px-6 py-4 mx-auto ">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">

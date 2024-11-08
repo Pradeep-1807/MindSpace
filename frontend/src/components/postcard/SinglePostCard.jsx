@@ -3,12 +3,18 @@ import parse from 'html-react-parser'
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeletePostConfirmation from './DeletePostConfirmation';
+import stripHtml from '../../utils/stripHtml';
+import { useSelector } from 'react-redux';
 
 const SinglePostCard = ({ postId, imageUrl, category, title, content, username, email}) => {
 
     const [ isDeletePostConfirmationVisible, setIsDeletePostConfirmationVisible ] = useState(false)
 
+    const authData = useSelector((state)=>state.auth.userData)
     const navigate = useNavigate()
+
+    const deleteIconStyle = ((authData.username === username) && (authData.email === email)) ? 'block' : 'hidden'
+    
 
     function handlePostNavigate(id){
         navigate(`/post/${id}`)
@@ -17,21 +23,19 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
     function handleDeletePostIconClick(){
         setIsDeletePostConfirmationVisible((prev)=>!prev)
     }
-
-
-    const stripHtml = (html) => {
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        return div.textContent || div.innerText || '';
-    };
+      
     
-    // Strip HTML tags, slice to 250 characters, and add ellipsis
     const slicedContent = stripHtml(content).slice(0, 300) + (content.length > 300 ? '...' : '');
+    
+    
 
   return (
-    <div className="container px-6 py-10 mx-auto cursor-pointer"  >
+    <div className="container px-6 py-10 mx-auto relative"  >
         <div className="mt-8 lg:-mx-6 lg:flex lg:items-center">
-            <img className="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96" src={imageUrl} alt="Image" />
+            <img className="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96 cursor-pointer" 
+                src={imageUrl} 
+                alt="Image" 
+                onClick={()=>handlePostNavigate(postId)} />
 
             <div className="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 relative">
                 <p className="text-sm text-blue-500 uppercase">{category || 'Category'}</p>
@@ -41,7 +45,7 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
                 </h3>
 
                 <span className="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
-                    { parse(slicedContent) } { content.length>250 && <a className='text-blue-700 underline' onClick={()=>handlePostNavigate(postId)}>Read More</a>}
+                    { parse(slicedContent) } { content.length>250 && <a className='text-blue-700 underline cursor-pointer' onClick={()=>handlePostNavigate(postId)}>Read More</a>}
                 </span>
 
 
@@ -54,7 +58,7 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
                     </div>
                 </div>
 
-                <div className='absolute right-1  p-1 sm:p-2 bg-slate-600 hover:bg-slate-800 rounded-lg' onClick={handleDeletePostIconClick}>
+                <div className={`${deleteIconStyle} absolute right-1  p-1 sm:p-2 bg-slate-600 hover:bg-slate-800 rounded-lg cursor-pointer`} onClick={handleDeletePostIconClick}>
                     <DeleteIcon sx={{color:'red'}} />
                 </div>
             </div>

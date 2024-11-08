@@ -132,7 +132,6 @@ const deletePost = async (req, res) => {
   try {
     const postId = new mongoose.Types.ObjectId(req.params.postId);
     
-    // Check if the file exists in GridFS
     const postToDelete = await gfs.find({ _id: postId }).toArray();
     
     if (!postToDelete || postToDelete.length === 0) {
@@ -141,22 +140,34 @@ const deletePost = async (req, res) => {
       });
     }
 
-    // Delete the file from GridFS
-    await gfs.delete(postId);
-
-    // Check if the file was deleted
-    const checkDeletion = await gfs.find({ _id: postId }).toArray();
     
-    if (checkDeletion.length === 0) {
-      return res.status(200).json({
-        status:true,
-        message: 'Post deleted successfully',
-      });
-    } else {
-      return res.status(500).json({
-        error: 'Failed to delete the post',
-      });
+    const {username, email} = req.body
+    const {username: usernameToVerify, email: emailToVerify} = postToDelete[0].metadata
+
+    if ((username === usernameToVerify) && (email === emailToVerify)){
+      await gfs.delete(postId);
+      console.log('User has access to delete the post')
+
+      const checkDeletion = await gfs.find({ _id: postId }).toArray();
+    
+      if (checkDeletion.length === 0) {
+        return res.status(200).json({
+          status:true,
+          message: 'Post deleted successfully',
+        });
+      } else {
+        return res.status(500).json({
+          error: 'Failed to delete the post',
+        });
+      }
     }
+    else{
+      res.status(401).json({
+        error: "User has no access to delete the post"
+      })
+    }
+
+    
   } catch (error) {
     console.error('Error deleting post:', error);
     return res.status(500).json({

@@ -142,7 +142,7 @@ const registerUser = async (req, res) => {
         status: 'Success',
         message: 'User logged in successfully',
         user: {
-          name: verifiedUsername,
+          username: verifiedUsername,
           email: verifiedEmail,
         },
       });

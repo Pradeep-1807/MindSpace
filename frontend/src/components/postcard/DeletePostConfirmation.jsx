@@ -1,16 +1,20 @@
 import React from 'react'
 import apiRequest from '../../utils/apiRequest'
+import { useSelector } from 'react-redux'
 
 const DeletePostConfirmation = ({isVisible, setIsVisible, postId}) => {
+
+    const authData = useSelector((state)=>state.auth.userData)
 
     async function handleDeletePostConfirmationClick(postId){
         try {
             const isPostDeleted = await apiRequest({
                 method:'POST',
                 url:`/deletePost/${postId}`,
-                data:{}
+                data:authData
             })
             if (isPostDeleted && isPostDeleted.status){
+                setIsVisible(false)
                 console.log('Post Deleted Successfully')
             }
         } catch (error) {
