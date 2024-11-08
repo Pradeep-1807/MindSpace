@@ -20,13 +20,14 @@ const Header = () => {
       <div className="container px-6 py-4 mx-auto ">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">
-            <a href="">
-              <img
+            <h2 className='text-white text-lg sm:text-xl cursor-pointer' onClick={()=>navigate('/')}>
+              {/* <img
                 className="w-auto h-6 sm:h-7"
                 src="https://merakiui.com/images/full-logo.svg"
                 alt="Logo"
-              />
-            </a>
+              /> */}
+              <span className='text-xl sm:text-2xl'>M</span>ind<span className='text-xl sm:tex-2xl'>S</span>pace
+            </h2>
 
             {/* Mobile menu button */}
             <div className="flex lg:hidden">
@@ -95,13 +96,13 @@ const Header = () => {
 
             </div>
 
-            <div className="flex items-center mt-4 lg:mt-0">
+            <div className="flex items-center mt-4 lg:mt-0" onClick={handleProfileClick}>
               <button
                 type="button"
                 className="flex items-center focus:outline-none"
                 aria-label="toggle profile dropdown"
               >
-                <div className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full" onClick={handleProfileClick}>
+                <div className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full" >
                   <img
                     src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
                     className="object-cover w-full h-full"

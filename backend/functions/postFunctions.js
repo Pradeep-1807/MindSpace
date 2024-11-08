@@ -69,7 +69,7 @@ const getPosts =  async (req, res) => {
           });
       }
 
-      const files = await gfs.find().toArray();
+      const files = await gfs.find().sort({uploadDate: -1}).toArray();
       if (!files || files.length === 0) {
           return res.status(404).json({
               message: 'No files found',

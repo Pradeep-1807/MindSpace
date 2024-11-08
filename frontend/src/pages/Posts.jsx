@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
 import apiRequest from '../utils/apiRequest';
 import SinglePostCard from '../components/postcard/SinglePostCard';
@@ -8,8 +9,9 @@ import { all } from 'axios';
 const Posts = () => {
 
   const [allPosts, setAllPosts] = useState([]);
+  const authData = useSelector((state)=>state.auth.userData)
 
-  
+  const dispatch = useDispatch()
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
@@ -21,6 +23,21 @@ const Posts = () => {
       });
       if (response && Array.isArray(response.files)) {
         setAllPosts(response.files);
+        if (authData) {
+          const { username, email, id, exp, iat} = authData
+          const postCount = response.files?.reduce((acc, cur) => {
+            if (cur.metadata.email === email && cur.metadata.username === username) {
+              console.log('+1')
+              acc += 1;
+            }
+            return acc;
+          }, 0);
+        
+          const userData = { id, username, email, postCount, iat, exp }
+          dispatch(login(userData));
+          
+        }
+
       } else {
         setAllPosts([]);
       }
@@ -28,9 +45,12 @@ const Posts = () => {
       console.error("Error fetching posts:", error);
       setAllPosts([]);
     }
+
+    console.log('post collection : ',allPosts)
+
   };
 
-  console.log('post collection : ',allPosts)
+  
 
   useEffect(() => {
     getPosts();
