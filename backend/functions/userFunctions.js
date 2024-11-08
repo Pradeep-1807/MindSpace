@@ -156,4 +156,22 @@ const registerUser = async (req, res) => {
     }
   };
   
-export {registerUser, loginUser}
+const logoutUser = async(req, res)=>{
+  try {
+    await res.clearCookie('authToken', {
+      httpOnly: true,        // Ensure the same settings as when the cookie was set
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+    });
+    res.status(200).json({
+      status:true,
+      message:'User logged out Successfully'
+    })
+    
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
+export {registerUser, loginUser, logoutUser}

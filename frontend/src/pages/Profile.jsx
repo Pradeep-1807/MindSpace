@@ -1,10 +1,18 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import apiRequest from '../utils/apiRequest'
+import { logout } from '../store/authSlice'
+import ConfirmLogout from '../components/ConfirmLogout'
 
 const Profile = () => {
 
+  const [ isLogoutBoxVisible, setIsLogoutBoxVisible ] = useState(false)
   const authData = useSelector((state)=>state.auth.userData)
+  const dispatch = useDispatch()
   
+  async function handleLogoutClick(){
+   setIsLogoutBoxVisible((prev)=>!prev)
+  }
 
   return (
     <div className='bg-white shadow dark:bg-slate-900 min-h-screen w-screen pt-[8vh] sm:pt-[10vh] flex justify-center items-center'>
@@ -49,19 +57,16 @@ const Profile = () => {
                   <h1 className="px-2 text-md">India</h1>
               </div>
 
-              <div className="flex items-center mt-5 text-gray-700 dark:text-gray-200  cursor-pointer" >
+              <div className="flex items-center mt-5 text-gray-700 dark:text-gray-200  cursor-pointer" onClick={handleLogoutClick} >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{fill: "rgba(255, 255, 255, 1)"}}>
                   <path d="M12 21c4.411 0 8-3.589 8-8 0-3.35-2.072-6.221-5-7.411v2.223A6 6 0 0 1 18 13c0 3.309-2.691 6-6 6s-6-2.691-6-6a5.999 5.999 0 0 1 3-5.188V5.589C6.072 6.779 4 9.65 4 13c0 4.411 3.589 8 8 8z"></path>
                   <path d="M11 2h2v10h-2z"></path>
                 </svg>
                     <h1 className="px-2 text-md">Logout</h1>
               </div>
-
-              
-
-              
           </div>
       </div>
+      <ConfirmLogout isVisible={isLogoutBoxVisible} setIsVisible={setIsLogoutBoxVisible} />
     </div>
   )
 }
