@@ -93,7 +93,6 @@ const getFileById = async (req, res) => {
   try {
     const fileId = new mongoose.Types.ObjectId(req.params.postId);
     const file = await gfs.find({ _id: fileId }).toArray();
-    console.log('single file : ', file)
 
     if (!file || file.length === 0) {
       return res.status(404).json({ error: "File not found" });

@@ -98,7 +98,7 @@ const AddPost = () => {
         <div className="file-upload-container">
           {/* Custom styled button */}
           <label htmlFor="file-upload" className="custom-file-upload">
-            Upload
+            Upload File
           </label>
           <input
             id="file-upload"

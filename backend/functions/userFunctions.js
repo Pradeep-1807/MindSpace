@@ -122,7 +122,7 @@ const registerUser = async (req, res) => {
   
       const { _id, username: verifiedUsername, email: verifiedEmail } = verifiedUser.user;
   
-      // Create the JWT token
+      
       const token = jwt.sign(
         { id: _id, username: verifiedUsername, email: verifiedEmail }, 
         process.env.JWT_SECRET_KEY, 
@@ -136,15 +136,15 @@ const registerUser = async (req, res) => {
         sameSite: 'Strict',  // Helps prevent CSRF attacks
         maxAge: 1000 * 60 * 60 * 24 * 15  // Optional: cookie expiry (15 days in ms)
       });
-  
+
+      const verifiedUserFromToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      console.log('verified user :', verifiedUserFromToken)
+
       // Send a successful response with user data and token
       res.status(200).json({
         status: 'Success',
         message: 'User logged in successfully',
-        user: {
-          username: verifiedUsername,
-          email: verifiedEmail,
-        },
+        user: verifiedUserFromToken
       });
   
     } catch (error) {
