@@ -28,7 +28,7 @@ const DeletePostConfirmation = ({isVisible, setIsVisible, postId}) => {
     }
   return (
     <section className="bg-white dark:bg-gray-900 h-auto w-[85%] sm:w-[60%] md:w-[50%] lg:w-[40%] absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-lg  border-2 border-blue-900">
-        <div className="container flex flex-col items-center px-4 py-12 mx-auto text-center">
+        <div className="container flex flex-col items-center px-2 py-12 mx-auto text-center">
             <p className="block text-lg  sm:text-2xl font-semibold px-5 sm:px-10 max-w-4xl mt-4 text-gray-500 dark:text-gray-300">
                 Do you want to Delete this post?
             </p>

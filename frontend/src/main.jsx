@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import App from './App.jsx'
 import './index.css'
 
-import { Home, Signup,  Posts, AddPost, SinglePostDetails, Profile } from './pages/index.js'
+import { Home, Signup,  Posts, AddPost, SinglePostDetails, MyPosts, Profile } from './pages/index.js'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +51,14 @@ const router = createBrowserRouter([
       element:(
         <Protected authentication={true}>
           <SinglePostDetails />
+        </Protected>
+      )
+    },
+    {
+      path:'/my-posts',
+      element:(
+        <Protected authentication={true}>
+          <MyPosts />
         </Protected>
       )
     },

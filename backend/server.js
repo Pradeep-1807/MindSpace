@@ -29,11 +29,12 @@ const startServer = async () => {
         // Post Routes 
         app.post('/upload', upload.single('file'), uploadFile );
         app.get('/getPosts', getPosts);
+
         app.get("/streamPost/:postId", getFileById);
         app.get("/postDetails/:postId", getFileDetails)
         
         app.post('/deletePost/:postId', deletePost)
-      
+        app.get('/getPosts/:userId',getPosts)
 
         app.listen(port, () => {
             console.log(`Server running on port: ${port}`);

@@ -40,6 +40,7 @@ const AddPost = () => {
     formData.append('category', data.category)
     formData.append('username', authData.username)
     formData.append('email', authData.email)
+    formData.append('userId', authData.id)
 
     // Log FormData contents for debugging
     for (let pair of formData.entries()) {

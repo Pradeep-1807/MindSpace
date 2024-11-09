@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeletePostConfirmation from './DeletePostConfirmation';
 import stripHtml from '../../utils/stripHtml';
 import { useSelector } from 'react-redux';
+import timeFormatter from '../../utils/timeFormatter'
 
 const SinglePostCard = ({ postId, imageUrl, category, title, content, username, email}) => {
 
@@ -30,14 +31,14 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
     
 
   return (
-    <div className="container px-6 py-10 mx-auto relative"  >
-        <div className="mt-8 lg:-mx-6 lg:flex lg:items-center">
+    <div className="container px-3 sm:px-6 py-4 sm:py-7 mx-auto relative border-2 border-sky-900 rounded-md mt-5"  >
+        <div className="mt-0 lg:-mx-6 lg:flex lg:items-center ">
             <img className="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96 cursor-pointer" 
                 src={imageUrl} 
                 alt="Image" 
                 onClick={()=>handlePostNavigate(postId)} />
 
-            <div className="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 relative">
+            <div className=" lg:w-1/2 mt-4 lg:mx-6 relative">
                 <p className="text-sm text-blue-500 uppercase">{category || 'Category'}</p>
 
                 <h3 href="#" className="block mt-4 text-2xl font-semibold text-gray-800  dark:text-white">
@@ -47,6 +48,8 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
                 <span className="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
                     { parse(slicedContent) } { content.length>250 && <a className='text-blue-700 underline cursor-pointer' onClick={()=>handlePostNavigate(postId)}>Read More</a>}
                 </span>
+
+                <p>{}</p>
 
 
                 <div className="flex items-center mt-12">
@@ -58,7 +61,7 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
                     </div>
                 </div>
 
-                <div className={`${deleteIconStyle} absolute right-1  p-1 sm:p-2 bg-slate-600 hover:bg-slate-800 rounded-lg cursor-pointer`} onClick={handleDeletePostIconClick}>
+                <div className={`${deleteIconStyle} absolute right-1 bottom-1  p-1 sm:p-2 bg-slate-600 hover:bg-slate-800 rounded-lg cursor-pointer`} onClick={handleDeletePostIconClick}>
                     <DeleteIcon sx={{color:'red'}} />
                 </div>
             </div>

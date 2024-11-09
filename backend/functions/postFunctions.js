@@ -21,11 +21,11 @@ const uploadFile = async (req, res) => {
     }
     
     // Extract metadata from request body
-    const { title, content, category, username, email } = req.body;
+    const { title, content, category, username, email, userId } = req.body;
 
     // Update the file metadata
     const fileId = req.file.id;
-    const metadata = { title, content, category, username, email };
+    const metadata = { userId, title, content, category, username, email };
 
     // Find the uploaded file and update its metadata
     if (!mongoose.Types.ObjectId.isValid(fileId)) {
@@ -38,6 +38,7 @@ const uploadFile = async (req, res) => {
       {
         $set: {
           metadata: {
+            userId: userId,
             title: title,
             content: content,
             category: category,
@@ -67,6 +68,20 @@ const getPosts =  async (req, res) => {
           return res.status(500).json({
               message: 'GridFS is not initialized',
           });
+      }  
+      if (req.params.userId){
+        const userId = req.params.userId;
+        const files = await gfs.find({"metadata.userId" : userId}).sort({uploadDate: -1}).toArray();
+        if (!files || files.length === 0) {
+            return res.status(404).json({
+                message: 'No files found',
+            });
+        }
+
+        return res.json({
+            message: 'Files retrieved successfully',
+            files,
+        });
       }
 
       const files = await gfs.find().sort({uploadDate: -1}).toArray();
@@ -76,7 +91,7 @@ const getPosts =  async (req, res) => {
           });
       }
 
-      res.json({
+      return res.json({
           message: 'Files retrieved successfully',
           files,
       });

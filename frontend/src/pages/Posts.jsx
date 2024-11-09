@@ -62,7 +62,7 @@ const Posts = () => {
       {allPosts.length > 0 ? (
         allPosts.map((file) => {
           const imageUrl = `${BASE_URL}/streamPost/${file._id}`;
-          console.log('imageurl: ',imageUrl)
+          
           const { title, content, category, username, email } = file.metadata
 
 

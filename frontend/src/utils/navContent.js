@@ -8,8 +8,8 @@ const navContent =[
         url:'/add-post',
     },
     {
-        name:'Logout',
-        url:'/posts',
+        name:'MyPosts',
+        url:'/my-posts',
     }
 ]
 
