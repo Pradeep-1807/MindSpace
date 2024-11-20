@@ -4,13 +4,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
 import backgroundImg from '../assets/backgroundImg.jpg'
 import apiRequest from '../utils/apiRequest';
+import SuccessAlert from '../components/alerts/SuccessAlert';
+import FailureAlert from '../components/alerts/FailureAlert';
 import bcrypt from 'bcryptjs'
 import { useForm } from 'react-hook-form'
+import { createAlert, deleteAlert } from '../store/alertSlice';
 
 const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { register, handleSubmit, formState:{errors} } = useForm()
+  const { register, handleSubmit, formState:{errors}, reset } = useForm()
   const navigate = useNavigate()
   const dispatch = useDispatch()
  
@@ -26,10 +29,32 @@ const Home = () => {
           data
       })
       console.log("User logged in successfully :: ",response)
-      dispatch(login(response.user))
-      navigate('/posts')
+      if (response.status){
+        const alertObject = {
+          status: true,
+          title: 'Success',
+          message: response.message
+        }
+        dispatch(createAlert(alertObject))
+        setTimeout(() => {
+          dispatch(deleteAlert())
+          dispatch(login(response.user))
+          navigate('/posts')
+        }, 2000);
+      }
+      
 
     } catch (error) {
+        const alertObject = {
+          status:false,
+          title: 'Failed',
+          message: error.response.data.message
+        }
+        dispatch(createAlert(alertObject))
+        setTimeout(() => {
+            dispatch(deleteAlert())
+        }, 3000);
+        reset()
         console.log('loginSubmit :: ',error.response)
     }
   }
@@ -56,9 +81,7 @@ const Home = () => {
     verifyToken();  
   }, []);
 
-  // const toggleMenu = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const alertDetails = useSelector((state)=> state.alert)
 
   return (
     <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] " 
@@ -144,6 +167,9 @@ const Home = () => {
 
         </div>
       </div>
+
+      <SuccessAlert isVisible={alertDetails && alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
+      <FailureAlert isVisible={alertDetails.title && !alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
     </section>
   );
 };

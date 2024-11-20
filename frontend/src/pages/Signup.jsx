@@ -1,35 +1,72 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { createAlert, deleteAlert } from '../store/alertSlice'
 import { login } from '../store/authSlice'
 import { useForm } from 'react-hook-form'
 import apiRequest from '../utils/apiRequest'
+import SuccessAlert from '../components/alerts/SuccessAlert'
+import FailureAlert from '../components/alerts/FailureAlert'
 import bcrypt from 'bcryptjs'
 
 const Signup = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {register, handleSubmit, watch, formState:{errors}} = useForm()
+    const {register, handleSubmit, watch, formState:{errors}, reset} = useForm()
     const password = watch("password");
 
+    
+    // const [ alertDetails, setAlertDetails ] = useState({
+    //     status: false,
+    //     title:'',
+    //     message: ''
+    // })
+    const alertDetails = useSelector((state)=> state.alert)
+
     async function signupSubmit(data){
-        const {password, confirmPassword} = data
         
         try {
-            // if (password===confirmPassword){
-            //     data.confirmPassword = null
-            //     data.password = await bcrypt.hash(data.password, 10)
-            //     console.log(data.password)
-            // }
             const response = await apiRequest({
                 method:'POST',
                 url:'/register',
                 data
             })
             console.log("User registered successfully :: ",response)
-            navigate('/')
+
+            if (response.status){
+                const alertObject = {
+                    status: true,
+                    title: 'Success',
+                    message: response.message
+                }
+                dispatch(createAlert(alertObject))
+                setTimeout(() => {
+                    reset()
+                    dispatch(deleteAlert())
+                    navigate('/')
+                }, 3000);
+            }
+            // else{
+            //     const alertObject = {
+            //         title: 'Failed',
+            //         message: response.message
+            //     }
+            //     dispatch(createAlert(alertObject))
+            // }
+            
         } catch (error) {
+            const alertObject = {
+                status: false,
+                title: 'Failed',
+                message: error.response.data.message
+            }
+            dispatch(createAlert(alertObject))
+            setTimeout(() => {
+                dispatch(deleteAlert())
+            }, 3000);
+            reset()
             console.log('signupSubmit :: ',error.response)
         }
     }
@@ -134,8 +171,11 @@ const Signup = () => {
                         </h5>
                     </div>
                 </div>
+
             </form>
         </div>
+        <SuccessAlert isVisible={alertDetails && alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
+        <FailureAlert isVisible={alertDetails.title && !alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
     </section>
 
   )

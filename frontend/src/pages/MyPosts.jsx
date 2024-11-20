@@ -11,14 +11,18 @@ const MyPosts = () => {
     console.log('authdata from MyPosts',authData)
 
     async function getPostsById(){
-        const response = await apiRequest({
-            method:'GET',
-            url:`/getPosts/${authData.id}`
-        })
+        try {
+          const response = await apiRequest({
+              method:'GET',
+              url:`/getPosts/${authData.id}`
+          })
 
-        if (response && Array.isArray(response.files)){
-            setMyPosts(response.files)
-            console.log('response files for mypost :',response.files)
+          if (response && Array.isArray(response.files)){
+              setMyPosts(response.files)
+              console.log('response files for mypost :',response.files)
+          }
+        } catch (error) {
+          console.log('MyPosts ::  getPostsById ::',error)
         }
     }
 
