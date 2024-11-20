@@ -21,14 +21,14 @@ function verifyToken(req, res, next) {
 function verifyTokenAtHome(req, res) {
     const token = req.cookies.authToken;  // Get token from cookies
     if (!token) {
-      return res.status(401).json({ message: 'Token not found' });  // No token present
+      return res.status(401).json({ message: 'Token not found' });   // Invalid token
     }
   
     try {
       const verifiedUser = jwt.verify(token, process.env.JWT_SECRET_KEY); 
       return res.status(200).json({ message: 'Token is valid', user: verifiedUser });  // Token valid
     } catch (error) {
-      return res.status(401).json({ message: 'Token is invalid' });  // Invalid token
+      console.log('verifyTokenAtHome :: ',error)  // Invalid token
     }
 }
 

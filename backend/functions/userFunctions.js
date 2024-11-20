@@ -18,11 +18,16 @@ const verifyUser = async(email,password)=>{
         status:true,
         user: fetchedUser
       }
+    } else if (!fetchedUser){
+      return {
+        status:false,
+        message:"User not found"
+      }
     }
     else{
       return {
         status:false,
-        message:"User not found or the password doesn't match"
+        message:"Password doesn't match. Try again"
       }
     }
   } catch (error) {
@@ -78,7 +83,7 @@ const registerUser = async (req, res) => {
 
       res.status(201).json({
         status: true,
-        message: 'User created and verified successfully',
+        message: 'User created & verified successfully',
         user: {
           name: newUser.username,
           email: newUser.email,
@@ -115,7 +120,8 @@ const registerUser = async (req, res) => {
       const verifiedUser = await verifyUser(email, password);
       if (!verifiedUser.status) {
         return res.status(400).json({
-          status: 'Failed',
+          status: false,
+          title: 'Failed',
           message: verifiedUser.message,
         });
       }
@@ -142,7 +148,8 @@ const registerUser = async (req, res) => {
 
       // Send a successful response with user data and token
       res.status(200).json({
-        status: 'Success',
+        status: true,
+        title:'Success',
         message: 'User logged in successfully',
         user: verifiedUserFromToken
       });
