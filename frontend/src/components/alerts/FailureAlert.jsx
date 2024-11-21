@@ -16,7 +16,7 @@ const FailureAlert = ({isVisible, title, message}) => {
 
         <div className="px-2 sm:px-4 py-1 sm:py-2 -mx-3">
             <div className="mx-3">
-                <span className="font-semibold text-red-border-red-500 dark:text-red-400">{title}</span>
+                <span className="font-semibold text-red-500 border-red-500 dark:text-red-400">{title}</span>
                 <p className="text-sm text-gray-600 dark:text-gray-200">{message}</p>
             </div>
         </div>

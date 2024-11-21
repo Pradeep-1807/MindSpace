@@ -4,13 +4,18 @@ import { Editor } from '@tinymce/tinymce-react';
 import apiRequest from '../utils/apiRequest';
 import '../App.css';
 import { nanoid } from 'nanoid';  // Import nanoid
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import InfoAlert from '../components/alerts/InfoAlert';
+import { createAlert, deleteAlert } from '../store/alertSlice';
 import blogCategories from '../utils/blogCategories';
 
 const AddPost = () => {
   const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm();
   const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
 
+  const dispatch = useDispatch()
+  
+  const alertDetails = useSelector((state)=> state.alert)
   const authData = useSelector((state)=>state.auth.userData)
   console.log('authdata from add post :',authData)
   const [file, setFile] = useState(null); // To store the selected file
@@ -43,11 +48,11 @@ const AddPost = () => {
     formData.append('userId', authData.id)
 
     // Log FormData contents for debugging
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]); // Log each key-value pair
-    }
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0], pair[1]); // Log each key-value pair
+    // }
 
-    // Send the form data to your backend
+    
     try {
       const response = await apiRequest({
         method: 'POST',
@@ -58,6 +63,17 @@ const AddPost = () => {
         },
       });
       console.log('Response:', response);
+      if (response.status){
+        const alertObject = {
+          status: true,
+          title: response.title,
+          message: response.message
+        }
+        dispatch(createAlert(alertObject))
+        setTimeout(() => {
+          dispatch(deleteAlert())
+        }, 3000);
+      }
       setFile(null)
       reset()
     } catch (error) {
@@ -68,7 +84,6 @@ const AddPost = () => {
   return (
     <div className='min-h-screen bg-white shadow dark:bg-slate-900 text-white flex flex-col px-5 sm:px-10 justify-center items-center pt-[8vh] sm:pt-[10vh]'>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" encType="multipart/form-data">
-        {/* Title Field */}
         <div>
           <label htmlFor="title">Title</label>
           <input
@@ -137,6 +152,7 @@ const AddPost = () => {
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
         </div>
       </form>
+      <InfoAlert isVisible={alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
     </div>
   );
 };

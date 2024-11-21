@@ -16,6 +16,8 @@ const uploadFile = async (req, res) => {
     if (!req.file || !req.file.id) {
       console.log('File upload failed');
       return res.status(400).json({
+        status: false,
+        title: 'Failed',
         message: 'Failed to upload the file',
       });
     }
@@ -51,6 +53,8 @@ const uploadFile = async (req, res) => {
 
     // Respond with success
     res.status(200).json({ 
+      status: true,
+      title: 'Success',
       message: 'File uploaded successfully',
       metadata: metadata,
       file: req.file
