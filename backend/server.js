@@ -20,6 +20,11 @@ const startServer = async () => {
             methods: ["GET", "POST", "OPTIONS"],
             allowedHeaders: ["Content-Type", "Authorization"]
         }));
+
+        if (process.env.NODE_ENV === "production") {
+            console.log("Running in production mode");
+        }
+          
         
         app.use(cookieParser());
         app.use(express.json());
