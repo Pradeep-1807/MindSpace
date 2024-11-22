@@ -17,7 +17,7 @@ const AddPost = () => {
   
   const alertDetails = useSelector((state)=> state.alert)
   const authData = useSelector((state)=>state.auth.userData)
-  console.log('authdata from add post :',authData)
+  // console.log('authdata from add post :',authData)
   const [file, setFile] = useState(null); // To store the selected file
 
   // Handle file input change
@@ -47,10 +47,6 @@ const AddPost = () => {
     formData.append('email', authData.email)
     formData.append('userId', authData.id)
 
-    // Log FormData contents for debugging
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0], pair[1]); // Log each key-value pair
-    // }
 
     
     try {
@@ -63,6 +59,8 @@ const AddPost = () => {
         },
       });
       console.log('Response:', response);
+      
+      
       if (response.status){
         const alertObject = {
           status: true,
@@ -76,6 +74,17 @@ const AddPost = () => {
       }
       setFile(null)
       reset()
+
+      const updatedFile = await apiRequest({
+        method: 'GET',
+        url: `postDetails/${response?.file?.id}`
+      })
+      if (updatedFile){
+        const allPosts = JSON.parse(localStorage.getItem('allPosts'))
+        const updatedFileDetails = updatedFile?.post
+        localStorage.setItem('allPosts',JSON.stringify([updatedFileDetails,...allPosts]))
+        console.log('updated file :', updatedFile)
+      }
     } catch (error) {
       console.error('Error submitting post:', error);
     }

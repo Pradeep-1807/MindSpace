@@ -1,10 +1,14 @@
 import React from 'react'
 import apiRequest from '../../utils/apiRequest'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { createAlert, deleteAlert } from '../../store/alertSlice'
+import FailureAlert from '../alerts/FailureAlert'
 
-const DeletePostConfirmation = ({isVisible, setIsVisible, postId}) => {
+const DeletePostConfirmation = ({isDeleteBoxVisible, setIsVisible, postId, setAllPosts}) => {
 
     const authData = useSelector((state)=>state.auth.userData)
+    const alertDetails = useSelector((state)=>state.alert)
+    const dispatch = useDispatch()
 
     async function handleDeletePostConfirmationClick(postId){
         try {
@@ -17,13 +21,29 @@ const DeletePostConfirmation = ({isVisible, setIsVisible, postId}) => {
                 setIsVisible(false)
                 console.log('Post Deleted Successfully')
             }
+            const allPosts = JSON.parse(localStorage.getItem('allPosts'))
+            const filteredAllPosts = allPosts?.filter((singlePost)=>(
+                singlePost._id !== postId
+            ))
+            setAllPosts(filteredAllPosts)
+            localStorage.setItem('allPosts',JSON.stringify(filteredAllPosts))
+
+            const alertObject ={
+                status: true,
+                title: 'Deleted',
+                message: isPostDeleted.message
+            }
+            dispatch(createAlert(alertObject))
+            setTimeout(() => {
+                dispatch(deleteAlert())
+            }, 3000);
         } catch (error) {
             throw new error
         }
  
     }
 
-    if (!isVisible){
+    if (!isDeleteBoxVisible){
         return
     }
   return (
@@ -49,6 +69,7 @@ const DeletePostConfirmation = ({isVisible, setIsVisible, postId}) => {
                 </button>
             </div>
         </div>
+        <FailureAlert isVisible={alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
     </section>
   )
 }

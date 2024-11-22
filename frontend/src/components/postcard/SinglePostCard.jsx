@@ -7,14 +7,14 @@ import stripHtml from '../../utils/stripHtml';
 import { useSelector } from 'react-redux';
 import timeFormatter from '../../utils/timeFormatter'
 
-const SinglePostCard = ({ postId, imageUrl, category, title, content, username, email}) => {
+const SinglePostCard = ({ postId, imageUrl, category, title, content, username, email, setAllPosts}) => {
 
     const [ isDeletePostConfirmationVisible, setIsDeletePostConfirmationVisible ] = useState(false)
 
     const authData = useSelector((state)=>state.auth.userData)
     const navigate = useNavigate()
 
-    const deleteIconStyle = ((authData.username === username) && (authData.email === email)) ? 'block' : 'hidden'
+    const deleteIconStyle = ((authData?.username === username) && (authData.email === email)) ? 'block' : 'hidden'
     
 
     function handlePostNavigate(id){
@@ -67,7 +67,7 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
             </div>
             
         </div>
-        <DeletePostConfirmation isVisible={isDeletePostConfirmationVisible} setIsVisible={setIsDeletePostConfirmationVisible} postId={postId} />
+        <DeletePostConfirmation  isDeleteBoxVisible={isDeletePostConfirmationVisible} setIsVisible={setIsDeletePostConfirmationVisible} postId={postId} setAllPosts={setAllPosts}/>
     </div>
   )
 }

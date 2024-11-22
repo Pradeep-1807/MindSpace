@@ -27,7 +27,7 @@ const verifyUser = async(email,password)=>{
     else{
       return {
         status:false,
-        message:"Password doesn't match. Try again"
+        message:"Password doesn't match. Try againc"
       }
     }
   } catch (error) {
