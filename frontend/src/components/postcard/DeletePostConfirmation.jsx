@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createAlert, deleteAlert } from '../../store/alertSlice'
 import FailureAlert from '../alerts/FailureAlert'
 
-const DeletePostConfirmation = ({isDeleteBoxVisible, setIsVisible, postId, setAllPosts}) => {
+const DeletePostConfirmation = ({isDeletePostConfirmationVisible, setIsDeletePostConfirmationVisible, postId, setAllPosts}) => {
 
     const authData = useSelector((state)=>state.auth.userData)
     const alertDetails = useSelector((state)=>state.alert)
@@ -18,7 +18,7 @@ const DeletePostConfirmation = ({isDeleteBoxVisible, setIsVisible, postId, setAl
                 data:authData
             })
             if (isPostDeleted && isPostDeleted.status){
-                setIsVisible(false)
+                setIsDeletePostConfirmationVisible(false)
                 console.log('Post Deleted Successfully')
             }
             const allPosts = JSON.parse(localStorage.getItem('allPosts'))
@@ -28,24 +28,25 @@ const DeletePostConfirmation = ({isDeleteBoxVisible, setIsVisible, postId, setAl
             setAllPosts(filteredAllPosts)
             localStorage.setItem('allPosts',JSON.stringify(filteredAllPosts))
 
-            const alertObject ={
+            const alertObject = {
                 status: true,
                 title: 'Deleted',
-                message: isPostDeleted.message
+                message: isPostDeleted?.message
             }
+            console.log('alertObject from delete confirmation :', alertObject)
             dispatch(createAlert(alertObject))
             setTimeout(() => {
-                dispatch(deleteAlert())
+            dispatch(deleteAlert())
             }, 3000);
+            console.log('alertDetails after delete alert :',alertDetails)
         } catch (error) {
             throw new error
         }
  
     }
 
-    if (!isDeleteBoxVisible){
-        return
-    }
+    if (!isDeletePostConfirmationVisible) return 
+
   return (
     <section className="bg-white dark:bg-gray-900 h-auto w-[85%] sm:w-[60%] md:w-[50%] lg:w-[40%] absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-lg  border-2 border-blue-900">
         <div className="container flex flex-col items-center px-2 py-12 mx-auto text-center">
@@ -54,7 +55,7 @@ const DeletePostConfirmation = ({isDeleteBoxVisible, setIsVisible, postId, setAl
             </p>
  
             <div className="mt-6">
-                <button onClick={()=>setIsVisible((prev)=>!prev)} 
+                <button onClick={()=>setIsDeletePostConfirmationVisible((prev)=>!prev)} 
                     className="inline-flex items-center justify-center w-full px-4 py-2.5 overflow-hidden text-sm text-white transition-colors duration-300 bg-gray-900 rounded-lg shadow sm:w-auto sm:mx-2 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 focus:ring focus:ring-gray-300 focus:ring-opacity-80">
                     <span className="mx-2">
                         Cancel
@@ -69,7 +70,6 @@ const DeletePostConfirmation = ({isDeleteBoxVisible, setIsVisible, postId, setAl
                 </button>
             </div>
         </div>
-        <FailureAlert isVisible={alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
     </section>
   )
 }

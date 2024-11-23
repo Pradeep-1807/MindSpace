@@ -4,6 +4,7 @@ import { login } from '../store/authSlice';
 import { json, useNavigate } from 'react-router-dom';
 import apiRequest from '../utils/apiRequest';
 import SinglePostCard from '../components/postcard/SinglePostCard';
+import FailureAlert from '../components/alerts/FailureAlert';
 import { all } from 'axios';
 
 const Posts = () => {
@@ -15,6 +16,7 @@ const Posts = () => {
     return posts!=null ? JSON.parse(posts) : []
   });
   const authData = useSelector((state)=>state.auth.userData)
+  
 
   const dispatch = useDispatch()
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -98,6 +100,7 @@ const Posts = () => {
       )}
         
     </section>
+    
   );
 };
 

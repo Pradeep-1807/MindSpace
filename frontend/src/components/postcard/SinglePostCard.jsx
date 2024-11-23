@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeletePostConfirmation from './DeletePostConfirmation';
 import stripHtml from '../../utils/stripHtml';
 import { useSelector } from 'react-redux';
+import FailureAlert from '../alerts/FailureAlert';
 import timeFormatter from '../../utils/timeFormatter'
 
 const SinglePostCard = ({ postId, imageUrl, category, title, content, username, email, setAllPosts}) => {
@@ -12,6 +13,7 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
     const [ isDeletePostConfirmationVisible, setIsDeletePostConfirmationVisible ] = useState(false)
 
     const authData = useSelector((state)=>state.auth.userData)
+    const alertDetails = useSelector((state)=> state.alert)
     const navigate = useNavigate()
 
     const deleteIconStyle = ((authData?.username === username) && (authData.email === email)) ? 'block' : 'hidden'
@@ -67,7 +69,8 @@ const SinglePostCard = ({ postId, imageUrl, category, title, content, username, 
             </div>
             
         </div>
-        <DeletePostConfirmation  isDeleteBoxVisible={isDeletePostConfirmationVisible} setIsVisible={setIsDeletePostConfirmationVisible} postId={postId} setAllPosts={setAllPosts}/>
+        <DeletePostConfirmation  isDeletePostConfirmationVisible={isDeletePostConfirmationVisible} setIsDeletePostConfirmationVisible={setIsDeletePostConfirmationVisible} postId={postId} setAllPosts={setAllPosts}/>
+        <FailureAlert isVisible={alertDetails.status} title={alertDetails.title} message={alertDetails.message} />
     </div>
   )
 }
