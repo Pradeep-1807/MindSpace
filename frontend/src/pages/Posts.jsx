@@ -69,7 +69,7 @@ const Posts = () => {
 
   
   return (
-    <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] min-h-screen px-0 sm:px-20">
+    <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] min-h-screen px-2 sm:px-20">
       {allPosts && allPosts.length > 0 ? (
         allPosts.map((file) => {
           const imageUrl = `${BASE_URL}/streamPost/${file._id}`;

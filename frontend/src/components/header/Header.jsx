@@ -11,6 +11,7 @@ const Header = () => {
   console.log('authdata',authData)
 
   function handleProfileClick(){
+    setIsOpen((prev)=>!prev)
     navigate('/profile')
   }
   
@@ -85,7 +86,10 @@ const Header = () => {
                 navContent && navContent.map((current,index)=>(
                   <a
                     key={index}
-                    onClick={()=>{navigate(current.url)}}
+                    onClick={()=>{
+                      navigate(current.url)
+                      setIsOpen((prev)=>!prev)
+                    }}
                     className="px-3 py-2 mx-3 mt-2 text-gray-700 cursor-pointer transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     {current.name}
@@ -102,9 +106,9 @@ const Header = () => {
                 className="flex items-center focus:outline-none"
                 aria-label="toggle profile dropdown"
               >
-                <div className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full" >
+                <div className="w-8 h-8 overflow-hidden rounded-full" >
                   <img
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
+                    src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Sunglasses&hairColor=Black&facialHairType=BeardLight&facialHairColor=Black&clotheType=ShirtCrewNeck&clotheColor=Pink&eyeType=Default&eyebrowType=UnibrowNatural&mouthType=Default&skinColor=Light"
                     className="object-cover w-full h-full"
                     alt="avatar"
                   />

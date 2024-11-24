@@ -34,7 +34,7 @@ const MyPosts = () => {
 
 
   return (
-    <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] min-h-screen px-0 sm:px-20">
+    <section className="bg-white dark:bg-gray-900 pt-[8vh] sm:pt-[10vh] min-h-screen px-2 sm:px-20">
       {
         myPosts && myPosts.length > 0 ?
         myPosts.map((singlePost)=>{
