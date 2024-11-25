@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import { connectDB, upload, gfs } from './config/dbConfig.js';
 import userRoutes from './routes/userRoutes.js';
 import { getFileById, getFileDetails, getPosts, uploadFile, deletePost } from './functions/postFunctions.js';
-const port = process.env.PORT || 8000
+const port = 8000 || process.env.PORT 
 const app = express();
 dotenv.config();
 
