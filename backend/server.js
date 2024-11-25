@@ -21,9 +21,6 @@ const startServer = async () => {
             allowedHeaders: ["Content-Type", "Authorization"]
         }));
 
-        if (process.env.NODE_ENV === "production") {
-            console.log("Running in production mode");
-        }
           
         
         app.use(cookieParser());

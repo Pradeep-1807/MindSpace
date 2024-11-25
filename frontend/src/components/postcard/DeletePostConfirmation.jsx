@@ -19,7 +19,6 @@ const DeletePostConfirmation = ({isDeletePostConfirmationVisible, setIsDeletePos
             })
             if (isPostDeleted && isPostDeleted.status){
                 setIsDeletePostConfirmationVisible(false)
-                console.log('Post Deleted Successfully')
             }
             const allPosts = JSON.parse(localStorage.getItem('allPosts'))
             const filteredAllPosts = allPosts?.filter((singlePost)=>(
@@ -33,12 +32,10 @@ const DeletePostConfirmation = ({isDeletePostConfirmationVisible, setIsDeletePos
                 title: 'Deleted',
                 message: isPostDeleted?.message
             }
-            console.log('alertObject from delete confirmation :', alertObject)
             dispatch(createAlert(alertObject))
             setTimeout(() => {
             dispatch(deleteAlert())
             }, 3000);
-            console.log('alertDetails after delete alert :',alertDetails)
         } catch (error) {
             throw new error
         }

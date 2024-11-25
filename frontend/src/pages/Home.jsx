@@ -18,17 +18,14 @@ const Home = () => {
   const dispatch = useDispatch()
  
   const authStatus = useSelector((state)=> state.auth.status)
-  console.log( 'auth Status from home :: ',authStatus)
 
   async function loginSubmit(data){
     try {
-      console.log(data.password)
       const response = await apiRequest({
           method:'POST',
           url:'/login',
           data
       })
-      console.log("User logged in successfully :: ",response)
       if (response.status){
         const alertObject = {
           status: true,
@@ -55,7 +52,6 @@ const Home = () => {
             dispatch(deleteAlert())
         }, 3000);
         reset()
-        console.log('loginSubmit :: ',error.response)
     }
   }
 
@@ -68,7 +64,6 @@ const Home = () => {
 
       if (response.message === 'Token is valid') {
         dispatch(login(response.user))
-        console.log('user info from jwt ::',response.user)
         navigate('/posts');  
       }
     } catch (error) {

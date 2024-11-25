@@ -11,8 +11,6 @@ const Posts = () => {
 
   const [allPosts, setAllPosts] = useState(()=>{
     const posts = localStorage.getItem('allPosts')
-    console.log('inside usestate fetching allPosts')
-    if (posts) console.log('posts are present')
     return posts!=null ? JSON.parse(posts) : []
   });
   const authData = useSelector((state)=>state.auth.userData)
@@ -25,7 +23,6 @@ const Posts = () => {
   const getPosts = async () => {
     if (!allPosts || allPosts.length === 0){
       try {
-        console.log('getPosts in execution')
         const response = await apiRequest({
           method: 'GET',
           url: '/getPosts',
@@ -57,7 +54,6 @@ const Posts = () => {
       }
     }
     
-    // console.log('post collection : ',allPosts)
 
   };
 

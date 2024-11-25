@@ -164,7 +164,6 @@ const deletePost = async (req, res) => {
 
     if ((username === usernameToVerify) && (email === emailToVerify)){
       await gfs.delete(postId);
-      console.log('User has access to delete the post')
 
       const checkDeletion = await gfs.find({ _id: postId }).toArray();
     

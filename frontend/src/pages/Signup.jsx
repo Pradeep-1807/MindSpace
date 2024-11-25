@@ -33,7 +33,7 @@ const Signup = () => {
                 url:'/register',
                 data
             })
-            console.log("User registered successfully :: ",response)
+            
 
             if (response.status){
                 const alertObject = {

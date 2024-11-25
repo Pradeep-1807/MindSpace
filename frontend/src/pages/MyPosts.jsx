@@ -8,7 +8,6 @@ const MyPosts = () => {
     const [ myPosts, setMyPosts ] = useState([])
     const authData = useSelector((state)=>state.auth.userData)
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    console.log('authdata from MyPosts',authData)
 
     async function getPostsById(){
         try {
@@ -19,7 +18,6 @@ const MyPosts = () => {
 
           if (response && Array.isArray(response.files)){
               setMyPosts(response.files)
-              console.log('response files for mypost :',response.files)
           }
         } catch (error) {
           console.log('MyPosts ::  getPostsById ::',error)

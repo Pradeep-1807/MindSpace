@@ -17,7 +17,6 @@ const AddPost = () => {
   
   const alertDetails = useSelector((state)=> state.alert)
   const authData = useSelector((state)=>state.auth.userData)
-  // console.log('authdata from add post :',authData)
   const [file, setFile] = useState(null); // To store the selected file
 
   // Handle file input change
@@ -32,7 +31,6 @@ const AddPost = () => {
 
   // Submit handler
   const onSubmit = async (data) => {
-    console.log('data',data)
     const formData = new FormData();
     formData.append('title', data.title); // Append title
     
@@ -58,7 +56,6 @@ const AddPost = () => {
           'Content-Type': 'multipart/form-data', // Use multipart/form-data for file uploads
         },
       });
-      console.log('Response:', response);
       
       
       if (response.status){
@@ -83,7 +80,6 @@ const AddPost = () => {
         const allPosts = JSON.parse(localStorage.getItem('allPosts'))
         const updatedFileDetails = updatedFile?.post
         localStorage.setItem('allPosts',JSON.stringify([updatedFileDetails,...allPosts]))
-        console.log('updated file :', updatedFile)
       }
     } catch (error) {
       console.error('Error submitting post:', error);

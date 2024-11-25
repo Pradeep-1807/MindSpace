@@ -15,7 +15,6 @@ const ConfirmLogout = ({isVisible, setIsVisible}) => {
         if (isLoggedOut.status){
             localStorage.clear();
             dispatch(logout())
-            console.log('User Logged out')
         }
     }
 

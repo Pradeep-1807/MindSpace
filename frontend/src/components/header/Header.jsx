@@ -8,7 +8,6 @@ const Header = () => {
   const navigate = useNavigate()
 
   const authData = useSelector((state)=>state.auth.userData)
-  console.log('authdata',authData)
 
   function handleProfileClick(){
     setIsOpen((prev)=>!prev)

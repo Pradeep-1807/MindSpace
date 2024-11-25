@@ -17,7 +17,7 @@ const Profile = () => {
   return (
     <div className='bg-white shadow dark:bg-slate-900 min-h-screen w-screen pt-[8vh] sm:pt-[10vh] flex justify-center items-center'>
       <div className="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 mx-5">
-          <img className="object-cover object-center w-full h-56" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar" />
+          <img className="object-cover object-center w-full h-56" src="https://image.lexica.art/full_webp/633a9cbe-7c17-4d29-bf9e-9f69c95ff536" alt="avatar" />
 
           <div className="flex items-center px-6 py-3 bg-gray-900">
               <svg aria-label="headphones icon" className="w-6 h-6 text-white fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

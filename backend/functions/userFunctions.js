@@ -144,7 +144,6 @@ const registerUser = async (req, res) => {
       });
 
       const verifiedUserFromToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      console.log('verified user :', verifiedUserFromToken)
 
       // Send a successful response with user data and token
       res.status(200).json({

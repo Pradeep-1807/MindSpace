@@ -17,9 +17,7 @@ const SinglePostDetails = () => {
       method: 'GET',
       url: `/postDetails/${postId}`
     })
-    console.log('response :',response.post)
     setPostDetails(response.post)
-    console.log(indianTimeFormatter(response.post.uploadDate))
   }
 
   if (!postDetails) {
@@ -35,7 +33,6 @@ const SinglePostDetails = () => {
   const metadata = postDetails?.metadata || {};
   const { title, email, content, category, username } = metadata;
   const postUploadDate = postDetails.uploadDate && indianTimeFormatter(postDetails.uploadDate)
-  console.log('content ',typeof(content))
 
   const imageUrl = `${BASE_URL}/streamPost/${postDetails?._id}`
 

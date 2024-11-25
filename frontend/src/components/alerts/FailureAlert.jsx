@@ -2,7 +2,6 @@ import React from 'react'
 
 const FailureAlert = ({isVisible, title, message}) => {
     
-    console.log('Failure alert Called ', isVisible)
     if (!isVisible)  return 
 
   return (
