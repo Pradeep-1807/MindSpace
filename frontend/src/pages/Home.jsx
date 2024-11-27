@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
@@ -11,7 +11,8 @@ import { useForm } from 'react-hook-form'
 import { createAlert, deleteAlert } from '../store/alertSlice';
 
 const Home = () => {
-  const [isOpen, setIsOpen] = useState(false);
+
+  localStorage.clear()
 
   const { register, handleSubmit, formState:{errors}, reset } = useForm()
   const navigate = useNavigate()
