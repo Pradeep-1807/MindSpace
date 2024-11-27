@@ -137,10 +137,11 @@ const registerUser = async (req, res) => {
   
       // Set the token in a HTTP-only cookie
       res.cookie('authToken', token, {
-        httpOnly: true,  // Cookie is only accessible by the server, not via JS
-        secure: process.env.NODE_ENV === 'production',  // Set to true in production
-        sameSite: 'Strict',  // Helps prevent CSRF attacks
-        maxAge: 1000 * 60 * 60 * 24 * 15  // Optional: cookie expiry (15 days in ms)
+        path: '/', // Cookie is accessible on all pages
+        httpOnly: true, // Cookie is only accessible by the server, not via JS
+        secure: process.env.NODE_ENV === 'production', // Ensures cookie is only sent over HTTPS in production
+        sameSite: 'None', // Allows cross-origin cookie sending
+        maxAge: 1000 * 60 * 60 * 24 * 15, // Cookie expires in 15 days
       });
 
       const verifiedUserFromToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -165,10 +166,11 @@ const registerUser = async (req, res) => {
 const logoutUser = async(req, res)=>{
   try {
     await res.clearCookie('authToken', {
-      httpOnly: true,        // Ensure the same settings as when the cookie was set
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-    });
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Only over HTTPS in production
+      sameSite: 'None',
+  });
     res.status(200).json({
       status:true,
       message:'User logged out Successfully'

@@ -15,7 +15,7 @@ const startServer = async () => {
         await connectDB(); 
 
         app.use(cors({
-            origin: "https://mind-space-blogs.vercel.app", 
+            origin: process.env.FRONTEND_URL, 
             credentials: true,
             methods: ["GET", "POST", "OPTIONS"],
             allowedHeaders: ["Content-Type", "Authorization"]
